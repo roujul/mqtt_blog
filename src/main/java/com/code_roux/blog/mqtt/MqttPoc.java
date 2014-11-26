@@ -14,9 +14,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MqttPoc implements MqttCallback {
 
-	private static final String BROKER_ADDRESS = "tcp://iot.eclipse.org:1883";
-
-	private static final String TOPIC_BLOG_MQTT = "topic/blog/mqtt";
+	public static final String BROKER_ADDRESS = "tcp://iot.eclipse.org:1883";
+	public static final String TOPIC_BLOG_MQTT = "topic/blog/mqtt";
 
 	private static final Logger LOGGER = Logger.getLogger(MqttPoc.class);
 	
@@ -66,30 +65,5 @@ public class MqttPoc implements MqttCallback {
 
 	public void messageArrived(String arg0, MqttMessage message) throws Exception {
 		LOGGER.info(new String(message.getPayload()));
-	}
-
-	public static void main(String[] args) {
-		MqttPoc mqttPoc = new MqttPoc(BROKER_ADDRESS, "pubAndSub");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		try {
-			mqttPoc.connectToBroker("username", "password");
-			mqttPoc.subscribe(TOPIC_BLOG_MQTT);
-
-			for (;;) {
-				try {
-					System.out.print("Enter message: ");
-					String message = br.readLine();
-					mqttPoc.publish(TOPIC_BLOG_MQTT, 0, message);
-					Thread.sleep(500);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 }
